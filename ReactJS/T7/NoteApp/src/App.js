@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component,Alert } from 'react';
 import './App.css';
 
+import TodoTable from './TodoTable.js'
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
@@ -22,13 +23,11 @@ class App extends Component {
 
   addTodo = (event) => {
     event.preventDefault();
-    //alert('click');
     //initialize object
     let addObject = {};
     //insert state properties to said object
     addObject.date = this.state.date
     addObject.description = this.state.description
-    //console.log(addObject);
     //add object to the Todos array
     this.setState({
       todos: [...this.state.todos, addObject]
@@ -36,9 +35,9 @@ class App extends Component {
     
   }
 
-  deleteTodo = (event) => {    
+  deleteTodo = (event) => {   
     //get ID of selected element
-    const targetId = parseInt(event.target.id,10);
+    const targetId = parseInt(event.target.id);
     //copy the current state of Todos
     const old = this.state.todos
     //new state
@@ -51,14 +50,18 @@ class App extends Component {
 
 
   render() {
-      const columns = [{
+
+      const columns = [
+      {
       Header: 'Date',
       accessor : 'date'
       }, {
 
       Header: "Description",
       accessor : 'description'  
-      }]
+      },
+      ]
+
 
     return (
       <div className="App">
@@ -74,8 +77,9 @@ class App extends Component {
           <input type="submit"  value="Add"/>
           </form>
 
-          <ReactTable data={this.state.todos}
-        columns={columns} />
+          <TodoTable todos={this.state.todos} delete={this.deleteTodo} />
+          {/*Use 3rd party table component*/}
+          {/*<ReactTable data={this.state.todos} delete={this.deleteTodo} columns={columns} />*/}
         </div>
       </div>    
     );
