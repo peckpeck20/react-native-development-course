@@ -11,6 +11,7 @@ export default class App extends React.Component {
 
   addItem = () => {
     this.setState({
+      //add item to the list array
       itemList: [...this.state.itemList,{key: this.state.item}],
       //clears item after its been added
       item : '',

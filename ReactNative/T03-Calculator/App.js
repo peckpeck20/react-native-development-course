@@ -39,7 +39,9 @@ export default class App extends React.Component {
   }
 
   clear = () => {
-
+    this.setState({
+      n1: 0, n2: 0, total: 0,data: []
+    })
   }
 
   render() {
