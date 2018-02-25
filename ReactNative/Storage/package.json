@@ -1,12 +1,11 @@
 {
-  "name": "T07",
+  "name": "Storage",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "jest-expo": "25.0.0",
     "react-native-scripts": "1.11.1",
-    "react-test-renderer": "16.2.0",
-    "reactotron-react-native": "^2.0.0-alpha.1"
+    "jest-expo": "25.0.0",
+    "react-test-renderer": "16.2.0"
   },
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
   "scripts": {
