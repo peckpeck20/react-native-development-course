@@ -23,13 +23,28 @@ export default class App extends React.Component {
       console.log(error)
     })
   }
+
+  //picker
+  // renderPickItems(){
+  //   let storeData = []
+  //   for ( var currencyType in this.state.data){
+  //     var pickerItem = <Picker.Item label= {currencyType} value= {currencyType}/>
+  //     storeData.push(pickerItem)
+  //   }
+  //   return storeData
+  // }
   
   render() {
     return (
       <View style={styles.container}>
         <Text>Currensy Converter!</Text>
         <TextInput keyboardType = 'numeric' onChangeText={(amount) =>{this.setState({amount})}}  style={styles.pad}  placeholder="amount"></TextInput>
-        <Picker selectedValue={this.state.data}></Picker>
+        <Picker 
+          selectedValue={this.state.data}
+          mode="dropdown" 
+          onValueChange={ ()=>{} } >
+          {storeData}
+        </Picker>
       </View>
     );
   }
