@@ -7,7 +7,9 @@ export default class App extends React.Component {
     super(props)
   
     this.state = {
-       data: [],amount: 0,
+       data: [],
+       amount: 0,
+       pickedCurrensy: ''
     };
   };
   
@@ -22,17 +24,19 @@ export default class App extends React.Component {
     .catch(error =>{
       console.log(error)
     })
+
   }
 
-  //picker
-  // renderPickItems(){
-  //   let storeData = []
-  //   for ( var currencyType in this.state.data){
-  //     var pickerItem = <Picker.Item label= {currencyType} value= {currencyType}/>
-  //     storeData.push(pickerItem)
-  //   }
-  //   return storeData
-  // }
+  //generate pickers
+  renderPickItems = () => {
+    let storeData = []
+    //in word is used object
+    for ( var currencyType in this.state.data){
+      var pickerItem = <Picker.Item label= {currencyType} value= {currencyType} key={currencyType} />
+      storeData.push(pickerItem)
+    }
+    return storeData
+  }
   
   render() {
     return (
@@ -40,10 +44,12 @@ export default class App extends React.Component {
         <Text>Currensy Converter!</Text>
         <TextInput keyboardType = 'numeric' onChangeText={(amount) =>{this.setState({amount})}}  style={styles.pad}  placeholder="amount"></TextInput>
         <Picker 
-          selectedValue={this.state.data}
+          selectedValue={this.state.pickedCurrensy}
           mode="dropdown" 
-          onValueChange={ ()=>{} } >
-          {storeData}
+          onValueChange={ (itemValue, itemIndex)=>{this.setState({pickedCurrensy:itemValue})} }
+
+        >
+          {this.renderPickItems()}
         </Picker>
       </View>
     );

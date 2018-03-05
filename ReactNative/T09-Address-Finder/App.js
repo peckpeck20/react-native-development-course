@@ -22,21 +22,26 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      data: {},
+      //API FETCH 
+      data: {
+
+      },
       initialPosition:{
-        latitude: 0,
-        longitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
+        latitude: 62.144355,
+        longitude: 26.432430,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+
+      },
+      myPosition:{
+        latitude:0,
+        longitude :0
       },
       markerPosition:{
         latitude:0,
         longitude :0
       },
-      searchPosition:{
-        latitude:0,
-        longitude :0
-      },
+
       address: "",
       region: "",
       myLat: 0,
@@ -62,14 +67,14 @@ export default class App extends React.Component {
         this.setState({ data });
         
 
-        let searchPosition = {
+        let myPosition = {
           latitude:data.geometry.location.latitude,
           longitude :data.geometry.location.longitude
         }
-        //console.log(searchPosition);
+        //console.log(myPosition);
 
         // this.setState({
-        //   searchPosition 
+        //   myPosition 
         // })
       })
       .catch(error => {
@@ -85,28 +90,38 @@ export default class App extends React.Component {
         let lat = parseFloat(position.coords.latitude)
         let long =parseFloat(position.coords.longitude)
 
-        let initialRegion = {
+        let myPosition = {
           latitude:lat,
-          longitude :long,
-          latitudeDelta: latitudeDelta,
-          longitudeDelta : longitudeDelta 
+          longitude :long
         }
-        
         this.setState({
-          initialPosition: initialRegion,
-          //always follow marker
-          markerPosition : initialRegion
-        });
+          myPosition
+        })
+
+        // let initialRegion = {
+        //   latitude:lat,
+        //   longitude :long,
+        //   // latitudeDelta: latitudeDelta,
+        //   // longitudeDelta : longitudeDelta 
+        // }
+        
+        // this.setState({
+        //   initialPosition: initialRegion,
+        //   //always follow marker
+        //   markerPosition : initialRegion
+        // });
         console.log("myLocation set");
 
       },
       error => Alert(JSON.stringify(error)),
       { enableHighAccuracy: true, timeout: 200000, maximumAge: 1000 }
     );
+
+    console.log(getRegionForCoordinates(this.state.myPosition))
   }
 
   componentDidMount(){
-    this.getLocation()
+    // this.getLocation()
   }
 
   // createMarker(props){
@@ -129,6 +144,40 @@ export default class App extends React.Component {
   // onRegionChange(region) {
   //   this.setState({ region });
   // }
+
+   getRegionForCoordinates(points) {
+    // points should be an array of { latitude: X, longitude: Y }
+    // let point = [this.state.myPosition] 
+    let minX, maxX, minY, maxY;
+  
+    // init first point
+    ((point) => {
+      minX = point.latitude;
+      maxX = point.latitude;
+      minY = point.longitude;
+      maxY = point.longitude;
+    })(points[0]);
+  
+    // calculate rect
+    points.map((point) => {
+      minX = Math.min(minX, point.latitude);
+      maxX = Math.max(maxX, point.latitude);
+      minY = Math.min(minY, point.longitude);
+      maxY = Math.max(maxY, point.longitude);
+    });
+  
+    const midX = (minX + maxX) / 2;
+    const midY = (minY + maxY) / 2;
+    const deltaX = (maxX - minX);
+    const deltaY = (maxY - minY);
+  
+    return {
+      latitude: midX,
+      longitude: midY,
+      latitudeDelta: deltaX,
+      longitudeDelta: deltaY
+    };
+  }
 
   render() {
     return (
@@ -387,6 +436,7 @@ export default class App extends React.Component {
         />
         <Button color={'red'} title="Search" onPress={this.onClickfetchData} />
         <Button title="Find me" onPress={this.getLocation} />
+        {/* <Button title="set " onPress={this.getRegionForCoordinates([])} /> */}
 
         {/* <Button title="e" onPress={e => console.log(e.nativeEvent)} /> */}
 
