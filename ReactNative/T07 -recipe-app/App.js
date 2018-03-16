@@ -60,8 +60,10 @@ export default class App extends React.Component {
           onPress={this
           .fetchFood
           .bind(this)}
-          style={styles.pad}></Button>
-        <FlatList style={styles.items} //key for index
+          style={styles.pad}>
+        </Button>
+        <FlatList style={styles.items} 
+          //key for index
           keyExtractor={(x, i) => i} renderItem={({item}) => <Text numberOfLines={3} >
           {item.title}
           <Image
