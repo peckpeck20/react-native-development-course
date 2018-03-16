@@ -12,7 +12,7 @@ import Expo, { SQLite } from "expo";
 
 //db init
 const db = SQLite.openDatabase("db.db");
-console.log(db);
+//console.log(db);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -85,7 +85,7 @@ export default class App extends React.Component {
   clearTxt = () => {
     this.setState({
       product: "",
-      item: ""
+      amount: ""
     });
   };
 
@@ -133,7 +133,7 @@ export default class App extends React.Component {
           onChangeText={amount => {
             this.setState({ amount });
           }}
-          value={this.state.item}
+          value={this.state.amount}
         />
         <View style={styles.buttonView}>
           <Icon
@@ -143,7 +143,7 @@ export default class App extends React.Component {
             color="red"
             raised={true}
             underlayColor="yellow"
-            onPress={this.updateItemList}
+            onPress={this.clearTxt}
           />
           <Icon
             reverse
