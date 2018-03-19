@@ -58,7 +58,9 @@ export default class App extends React.Component {
       null,
       this.updateItemList
     );
-    console.log('Item Saved')
+    console.log('Item Saved');
+    // this.clearTxt();
+    // Promise()
   };
 
     // Delete course
@@ -79,7 +81,9 @@ export default class App extends React.Component {
       tx.executeSql("select * from Item", [], (_, { rows }) =>
         this.setState({ itemList: rows._array })
       );
-    });
+    },
+   null,
+  this.clearTxt);
   };
 
   clearTxt = () => {
@@ -87,6 +91,7 @@ export default class App extends React.Component {
       product: "",
       amount: ""
     });
+    console.log("state cleared");
   };
 
   // buttonPressed = () => {

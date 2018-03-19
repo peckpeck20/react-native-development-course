@@ -7,12 +7,7 @@ import HistoryScreen from './screens/HistoryScreen';
 const MyApp = StackNavigator({
   Home : {screen : HomeScreen},
   History : {screen :HistoryScreen}
-},{
-  headerMode: 'none',
-  navigationOptions: {
-    headerVisible: false
-  }
- });
+},);
 export default class App extends React.Component {
 
 
