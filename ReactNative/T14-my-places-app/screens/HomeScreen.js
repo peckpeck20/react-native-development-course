@@ -16,80 +16,95 @@ import Expo, { SQLite } from "expo";
 export const db = SQLite.openDatabase("db.db");
 
 export default class HomeScreen extends React.Component {
-    constructor(props) {
-        super(props);
-    
-        this.state = {
-          inputAddress: "",
-          itemList: [],
-        };
-      }
-    
-      componentDidMount = () => {
-        //clear  DB -testing
-        this.dropTable();
-    
-        //create table
-        db.transaction(tx => {
-          tx.executeSql(
-            "create table if not exists Item (id integer primary key not null, address text);"
-          );
-        });
-    
-        this.updateItemList();
-      };
-    
-      dropTable = () => {
-        db.transaction(tx => {
-          tx.executeSql("drop table Item;");
-        });
-      };
-    
-      saveItem = () => {
-        db.transaction(
-          tx => {
-            //INSERT SQL - PREPARED STATEMENT
-            tx.executeSql("insert into  Item (address) values (?)", [
-              this.state.inputAddress
-            ]);
-          },
-          null,
-          this.updateItemList
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputAddress: "",
+      itemList: [],
+
+    };
+  }
+
+  componentDidMount = () => {
+    //clear  DB -testing
+    // this.dropTable();
+
+    //create table
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists Item (id integer primary key not null, address text);"
+      );
+    });
+
+    this.updateItemList();
+  };
+
+  dropTable = () => {
+    db.transaction(tx => {
+      tx.executeSql("drop table Item;");
+    });
+  };
+//CRUD METHODS
+  saveItem = () => {
+    db.transaction(
+      tx => {
+        //INSERT SQL - PREPARED STATEMENT
+        tx.executeSql("insert into  Item (address) values (?)", [
+          this.state.inputAddress
+        ]);
+      },
+      null,
+      this.updateItemList
+    );
+    console.log("Item Saved");
+    // this.clearTxt();
+    // Promise()
+  };
+
+  selectItem = id => {
+    db.transaction(tx => {
+      tx.executeSql(`select * from item where id = ?`, [id], (_, { rows }) =>
+        console.log(JSON.stringify(rows._array[0].address))
+      );
+    }, null);
+  };
+
+  updateItemList = () => {
+    console.log("list updated");
+
+    db.transaction(
+      tx => {
+        tx.executeSql("select * from Item", [], (_, { rows }) =>
+          this.setState({ itemList: rows._array })
         );
-        console.log('Item Saved');
-        // this.clearTxt();
-        // Promise()
-      };
-    
-        // Delete course
-        deleteItem = (id) => {
-          db.transaction(
-            tx => {
-              tx.executeSql(`delete from item where id = ?;`, [id]);
-            }, null, this.updateItemList
-          )
-          console.log('item deleted');
-              
-        }
-    
-      updateItemList = () => {
-        console.log("list updated");
-    
-        db.transaction(tx => {
-          tx.executeSql("select * from Item", [], (_, { rows }) =>
-            this.setState({ itemList: rows._array })
-          );
-        },
-       null,
-      this.clearTxt);
-      };
-    
-      clearTxt = () => {
-        this.setState({
-          inputAddress: ''
-        });
-        console.log("state cleared");
-      };
+      },
+      null,
+      this.clearTxt
+    );
+  };
+
+  deleteItem = id => {
+    db.transaction(
+      tx => {
+        tx.executeSql(`delete from item where id = ?;`, [id]);
+      },
+      null,
+      this.updateItemList
+    );
+    console.log("item deleted");
+  };
+
+
+
+
+
+  clearTxt = () => {
+    this.setState({
+      inputAddress: ""
+    });
+    console.log("state cleared");
+  };
 
   static navigationOptions = {
     title: "Home"
@@ -132,14 +147,11 @@ export default class HomeScreen extends React.Component {
               <ListItem
                 key={item.id}
                 title={item.address}
-                rightTitle={"X"}
+                rightTitle={"Map"}
                 switchButton={false}
                 hideChevron
-                // onPressRightIcon={()=>{console.log('hola');
-                // }}
-                // switched={this.state.switch}
-                // onPress={()=>{console.log(item.id)}}
-                onPress={() => this.deleteItem(item.id)}
+                // onPress={() => this.selectItem(item.id)}
+                onPress={() => navigate("Places", { name: "Jose Zapata" })}
                 switchThumbTintColor={"green"}
                 switchOnTintColor={"black"}
                 switchTintColor={"white"}

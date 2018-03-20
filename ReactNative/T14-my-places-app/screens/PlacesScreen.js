@@ -11,7 +11,7 @@ export default class PlacesScreen extends React.Component {
   render() {
 
     //passing props
-    // const {params} = this.props.navigation.state;
+    const {params} = this.props.navigation.state;
     return (
     //   <View style={styles.screenDef}>
     //     <StatusBar barStyle="dark-content" />
