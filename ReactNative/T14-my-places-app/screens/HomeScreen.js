@@ -22,6 +22,7 @@ export default class HomeScreen extends React.Component {
     this.state = {
       inputAddress: "",
       itemList: [],
+      selectedAddress : null,
 
     };
   }
@@ -65,7 +66,10 @@ export default class HomeScreen extends React.Component {
   selectItem = id => {
     db.transaction(tx => {
       tx.executeSql(`select * from item where id = ?`, [id], (_, { rows }) =>
-        console.log(JSON.stringify(rows._array[0].address))
+        console.log(JSON.stringify(rows._array[0].address)),
+        // this.setState({
+        //   selectedAddress : JSON.stringify(rows._array[0].address)
+        // })
       );
     }, null);
   };
@@ -147,22 +151,19 @@ export default class HomeScreen extends React.Component {
               <ListItem
                 key={item.id}
                 title={item.address}
-                rightTitle={"Map"}
+                rightIcon={{name: 'place'}}
                 switchButton={false}
-                hideChevron
                 // onPress={() => this.selectItem(item.id)}
-                onPress={() => navigate("Places", { name: "Jose Zapata" })}
-                switchThumbTintColor={"green"}
-                switchOnTintColor={"black"}
-                switchTintColor={"white"}
+                onPress={() => navigate("Places", {inputAddress: item.address })}
+                onLongPress={()=>{this.deleteItem(item.id)}}
               />
             ))}
           </List>
         </View>
 
         <Button
-          title="About"
-          onPress={() => navigate("Places", { name: "Jose Zapata" })}
+          title="Map"
+          onPress={() => navigate("Places", { inputAddress: "finland" })}
         />
       </View>
     );
