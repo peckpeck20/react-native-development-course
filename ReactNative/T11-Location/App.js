@@ -48,7 +48,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={{flex: this.state.flex}}>
-        <Button title="Find Me" onPress={this.getLocationAsync} />
+        {/* <Button title="Find Me" onPress={this.getLocationAsync} /> */}
         <MapView
           style={styles.mapStyle}
           initialRegion={this.state.initialRegion}
